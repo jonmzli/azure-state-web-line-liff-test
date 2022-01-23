@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>LINE Liff APP</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <h1>Line Liff APP</h1>
+        <button onclick="login()">登入Line</button>
+        <button onclick="share()">分享訊息</button>   
+        <!-- 5-2 -->
+        <script>
+            var liffId = '1656828770-ZkeoLEEj';
+                liff.init({
+                    liffId: liffId, // Use own liffId
+                })
+                .then(() => {
+                    // start to use LIFF's api
+                    var islogin = liff.isLoggedIn()
+                    console.log('islogin', islogin);
+                    if (islogin) {
+                        liff.getProfile()
+                            .then(profile => {
+                                console.log('profile',profile)
+                            })
+                            .catch((err) => {
+                                console.log('error', err);
+                            });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+        //<-- 5-4 -->                
+            function login(){
+                liff.login({ redirectUri: "https://d6ff-220-135-25-4.ngrok.io" });
+            }
+
+        //<-- 5-5 -->                
+        function share(){
+            if(liff.isLoggedIn()){
+                liff.shareTargetPicker(
+                    [
+                        // Message Objects: 放入要傳送的訊息
+                        {
+                            "type": "text",
+                            "text": "Hello, world"
+                        }
+                    ],
+                    {
+                        isMultiple: true,
+                    }
+                )
+                .then(function (res) {
+                    console.log(`[${res.status}] Message sent!`)
+                }).catch(function (error) {
+                        // something went wrong before sending a message
+                        console.log(error);
+                        console.log('something wrong happen')
+                })
+            } else {
+                login();
+            }
+        }
+            
+        </script>
+
+        
+
+
+        <script src="" async defer></script>
+    </body>
+</html>
